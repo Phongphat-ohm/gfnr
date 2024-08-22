@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Class {
+  id      String    @id @unique @default(cuid())
+  name    String
+  year    Int
+  Student Student[]
+}
+
+model Student {
+  id       Int     @id @unique @default(autoincrement())
+  class_id String
+  id_card  String
+  f_name   String
+  l_name   String
+  email    String  @unique
+  phone    String
+  address  String
+  username String  @unique
+  password String
+  Class    Class   @relation(fields: [class_id], references: [id])
+  Grade    Grade[]
+}
+
+model Subject {
+  id      Int       @id @unique @default(autoincrement())
+  name    String
+  Teacher Teacher[]
+  Grade   Grade[]
+}
+
+model Teacher {
+  id           Int            @id @unique @default(autoincrement())
+  subject_id   Int
+  id_card      String
+  f_name       String
+  l_name       String
+  email        String         @unique
+  username     String         @unique
+  password     String
+  Subject      Subject        @relation(fields: [subject_id], references: [id])
+  Grade        Grade[]
+  Notification Notification[]
+}
+
+model Grade {
+  id         Int     @id @unique @default(autoincrement())
+  subject_id Int
+  teacher_id Int
+  student_id Int
+  point      Float
+  grade      Float
+  Subject    Subject @relation(fields: [subject_id], references: [id])
+  Teacher    Teacher @relation(fields: [teacher_id], references: [id])
+  Student    Student @relation(fields: [student_id], references: [id])
+}
+
+model Notification {
+  id        Int      @id @unique @default(autoincrement())
+  create_by Int
+  message   String
+  status    String   @default("hide")
+  create_at DateTime @default(now())
+  Teacher   Teacher  @relation(fields: [create_by], references: [id])
+}

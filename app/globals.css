@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Pridi&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  font-family: "Pridi", serif !important;
+}
+
+body {
+  background-color: rgb(249 250 251) !important;
+
+}
